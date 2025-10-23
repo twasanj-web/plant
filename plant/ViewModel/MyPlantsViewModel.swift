@@ -1,18 +1,18 @@
-//
-//  MyPlantsViewModel.swift
-//  plant
-//
-//  Created by wasan jayid althagafi on 30/04/1447 AH.
-//
+import Foundation
+import Combine // <--- أضف هذا السطر
 
-import SwiftUI
+//================================================
+//  ملف: MyPlantsViewModel.swift
+//  المجلد: ViewModels
+//  الغرض: هذا هو الـ ViewModel (وسيط العرض)
+//================================================
 
-struct MyPlantsViewModel: View {
-    var body: some View {
-        Text(/*@START_MENU_TOKEN@*/"Hello, World!"/*@END_MENU_TOKEN@*/)
+class MyPlantsViewModel: ObservableObject {
+    
+    @Published var isShowingSetReminderSheet = false
+    
+    func showSetReminderSheet() {
+        isShowingSetReminderSheet = true
     }
 }
 
-#Preview {
-    MyPlantsViewModel()
-}
