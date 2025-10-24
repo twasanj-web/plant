@@ -71,15 +71,7 @@
 //    var wateringNeeds: String
 //    var sunExposure: String
 //}
-
-
 import Foundation
-
-//================================================
-//  ملف: PlantModel.swift
-//  المجلد: Models
-//  الغرض: تعريف نماذج البيانات للتطبيق
-//================================================
 
 // Enum لخيارات الغرفة
 enum Room: String, CaseIterable, Identifiable {
@@ -98,7 +90,7 @@ enum Light: String, CaseIterable, Identifiable {
     case partialSun = "Partial Sun"
     case lowLight = "Low Light"
     
-    var id: Self { self }
+    var id: String { rawValue }
 }
 
 // Enum لخيارات أيام الري
@@ -123,20 +115,15 @@ enum WaterAmount: String, CaseIterable, Identifiable {
     var id: Self { self }
 }
 
-// Struct لبيانات النبتة
-struct Plant {
+// Struct لبيانات النبتة (النسخة النهائية والصحيحة)
+struct Plant: Identifiable {
+    let id = UUID()
     var name: String = ""
-    var room: Room = .bedroom           // قيمة افتراضية للغرفة
-    var light: Light = .fullSun         // قيمة افتراضية للإضاءة
-    var wateringDays: WateringDays = .everyDay // قيمة افتراضية لأيام الري
-    var waterAmount: WaterAmount = .low        // قيمة افتراضية لكمية الماء
+    var room: Room = .bedroom
+    var light: Light = .fullSun
+    var wateringDays: WateringDays = .everyDay
+    var waterAmount: WaterAmount = .low
+    var isSelected: Bool = false // ضروري لشريط التقدم والاختيار
 }
 
-// Struct آخر يمكن استخدامه للنباتات الجديدة أو لقوائم العرض
-struct NewPlant: Identifiable {
-    let id = UUID()
-    var name: String
-    var location: String
-    var wateringNeeds: String
-    var sunExposure: String
-}
+// 🗑️ تم حذف NewPlant لتجنب أي التباس

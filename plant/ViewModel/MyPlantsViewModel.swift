@@ -15,4 +15,3 @@ class MyPlantsViewModel: ObservableObject {
         isShowingSetReminderSheet = true
     }
 }
-

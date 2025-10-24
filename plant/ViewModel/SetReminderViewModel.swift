@@ -26,6 +26,3 @@ class SetReminderViewModel: ObservableObject {
         print("Watering: \(plant.wateringDays.rawValue), Amount: \(plant.waterAmount.rawValue)") // للتأكد
     }
 }
-
-
-
