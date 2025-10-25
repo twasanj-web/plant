@@ -1,23 +1,7 @@
-//
-//import Foundation
-//import Combine
-//
-//class PlantListViewModel: ObservableObject {
-//    @Published var plants: [NewPlant] = []
-//
-//    init() {
-//        // يمكن إضافة منطق تحميل البيانات هنا إذا كانت موجودة
-//    }
-//
-//    func addPlant(name: String, location: String, wateringNeeds: String, sunExposure: String) {
-//        let newPlant = NewPlant(name: name, location: location, wateringNeeds: wateringNeeds, sunExposure: sunExposure)
-//        plants.append(newPlant)
-//    }
-//}
-// ملف: PlantListViewModel.swift (النسخة المصححة)
+
 import Foundation
 import Combine
-import SwiftUI // ✨ تم إضافة هذا السطر لإصلاح خطأ الحذف
+import SwiftUI
 
 class PlantListViewModel: ObservableObject {
     @Published var plants: [Plant] = []

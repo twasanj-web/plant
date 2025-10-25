@@ -1,23 +1,21 @@
 
 import SwiftUI
 
-//================================================
-//  ملف: EditView.swift
-//  المجلد: Views
-//  الغرض: هذا هو الـ View (واجهة المستخدم) لتعديل التذكير
-//================================================
 
 struct EditView: View {
     
-    @StateObject private var viewModel = SetReminderViewModel()
     @Binding var isPresented: Bool
+    @Binding var plant: Plant
+    
+    // إنشاء نسخة بسيطة من ViewModel فقط للحصول على خيارات الـ Enums
+    var optionsViewModel = SetReminderViewModel()
     
     var body: some View {
         NavigationView {
             ScrollView {
                 VStack(spacing: 45) {
                     
-                    // --- حقل اسم النبتة ---
+                    // MARK: - Plant Name
                     HStack {
                         Text("Plant Name")
                             .font(.system(size: 18, weight: .regular))
@@ -25,13 +23,13 @@ struct EditView: View {
                             .padding(.leading, 20)
                         
                         Rectangle()
-                            .fill(Color("g")) // تأكد من وجود هذا اللون في Assets
+                            .fill(Color("g"))
                             .frame(width: 1, height: 24)
                             .padding(.horizontal, 8)
                         
-                        TextField("Enter name", text: $viewModel.plant.name)
-                            .font(.system(size: 17, weight: .regular))
-                            .foregroundColor(Color(red: 102/255, green: 102/255, blue: 102/255))
+                        TextField("Enter name", text: $plant.name)
+                            .font(.system(size: 17))
+                            .foregroundColor(Color.gray)
                             .padding(.trailing, 20)
                     }
                     .frame(height: 59)
@@ -39,154 +37,120 @@ struct EditView: View {
                     .cornerRadius(30)
                     .padding(.horizontal)
                     
-                    
-                    // --- حقلي الغرفة والإضاءة ---
+                    // MARK: - Room & Light
                     VStack(spacing: 0) {
-                        // --- صف الغرفة (Room) ---
-                        ZStack {
-                            HStack {
-                                Image(systemName: "paperplane")
-                                    .foregroundColor(.white)
-                                Text("Room")
-                                    .foregroundColor(.white)
-                                Spacer()
-                                Text(viewModel.plant.room.rawValue)
-                                    .foregroundColor(Color(red: 142/255, green: 142/255, blue: 147/255))
-                                Image(systemName: "chevron.up.chevron.down")
-                                    .font(.caption)
-                                    .foregroundColor(Color(red: 142/255, green: 142/255, blue: 147/255))
-                            }
-                            .font(.system(size: 18, weight: .regular))
-                            .padding(.horizontal, 20)
+                        // Room
+                        HStack {
+                            // ✅ التعديل: استخدام Label أو Text/Image مباشرة
+                            Label("Room", systemImage: "location")
+                                .foregroundColor(.white)
                             
-                            Picker("", selection: $viewModel.plant.room) {
-                                ForEach(viewModel.roomOptions, id: \.self) { room in
+                            Spacer()
+                            
+                            Picker("", selection: $plant.room) {
+                                ForEach(optionsViewModel.roomOptions, id: \.self) { room in
                                     Text(room.rawValue).tag(room)
                                 }
                             }
                             .pickerStyle(.menu)
-                            .opacity(0.02) // حيلة لجعل الصف قابلاً للنقر
+                            .tint(Color(red: 142/255, green: 142/255, blue: 147/255))
                         }
+                        .padding(.vertical, 3)
+                        .padding(.horizontal)
                         
                         Divider().background(Color.gray.opacity(0.5)).padding(.horizontal)
                         
-                        // --- صف الإضاءة (Light) ---
-                        ZStack {
-                            HStack {
-                                Image(systemName: "sun.max")
-                                    .foregroundColor(.white)
-                                Text("Light")
-                                    .foregroundColor(.white)
-                                Spacer()
-                                Text(viewModel.plant.light.rawValue)
-                                    .foregroundColor(Color(red: 142/255, green: 142/255, blue: 147/255))
-                                Image(systemName: "chevron.up.chevron.down")
-                                    .font(.caption)
-                                    .foregroundColor(Color(red: 142/255, green: 142/255, blue: 147/255))
-                            }
-                            .font(.system(size: 18, weight: .regular))
-                            .padding(.horizontal, 20)
-                            
-                            Picker("", selection: $viewModel.plant.light) {
-                                ForEach(viewModel.lightOptions, id: \.self) { light in
+                        // Light
+                        HStack {
+                            Label("Light", systemImage: "sun.max")
+                                .foregroundColor(.white)
+                                
+                            Spacer()
+                                
+                            Picker("", selection: $plant.light) {
+                                ForEach(optionsViewModel.lightOptions, id: \.self) { light in
                                     Text(light.rawValue).tag(light)
                                 }
                             }
                             .pickerStyle(.menu)
-                            .opacity(0.02)
+                            .tint(Color(red: 142/255, green: 142/255, blue: 147/255))
                         }
+                        .padding(.vertical, 3)
+                        .padding(.horizontal)
                     }
-                    .frame(height: 95)
+                    .padding(.vertical, 10)
                     .background(Color(red: 44/255, green: 44/255, blue: 46/255))
                     .cornerRadius(30)
                     .padding(.horizontal)
                     
-                    
-                    // --- قسم الري (Watering) ---
+                    // MARK: - Watering
                     VStack(spacing: 0) {
-                        // --- صف أيام الري (Watering Days) ---
-                        ZStack {
-                            HStack {
-                                Image(systemName: "drop")
-                                    .foregroundColor(.white)
-                                Text("Watering Days")
-                                    .foregroundColor(.white)
-                                Spacer()
-                                Text(viewModel.plant.wateringDays.rawValue)
-                                    .foregroundColor(Color(red: 142/255, green: 142/255, blue: 147/255))
-                                Image(systemName: "chevron.up.chevron.down")
-                                    .font(.caption)
-                                    .foregroundColor(Color(red: 142/255, green: 142/255, blue: 147/255))
-                            }
-                            .font(.system(size: 18, weight: .regular))
-                            .padding(.horizontal, 20)
+                        // Watering Days
+                        HStack {
+                            Label("Watering Days", systemImage: "drop")
+                                .foregroundColor(.white)
                             
-                            Picker("", selection: $viewModel.plant.wateringDays) {
-                                ForEach(viewModel.wateringDaysOptions, id: \.self) { days in
+                            Spacer()
+                            
+                            Picker("", selection: $plant.wateringDays) {
+                                ForEach(optionsViewModel.wateringDaysOptions, id: \.self) { days in
                                     Text(days.rawValue).tag(days)
                                 }
                             }
                             .pickerStyle(.menu)
-                            .opacity(0.02)
+                            .tint(Color(red: 142/255, green: 142/255, blue: 147/255))
                         }
+                        .padding(.vertical, 3)
+                        .padding(.horizontal)
                         
                         Divider().background(Color.gray.opacity(0.5)).padding(.horizontal)
                         
-                        // --- صف كمية الماء (Water Amount) ---
-                        ZStack {
-                            HStack {
-                                Image(systemName: "drop")
-                                    .foregroundColor(.white)
-                                Text("Water Amount")
-                                    .foregroundColor(.white)
-                                Spacer()
-                                Text(viewModel.plant.waterAmount.rawValue)
-                                    .foregroundColor(Color(red: 142/255, green: 142/255, blue: 147/255))
-                                Image(systemName: "chevron.up.chevron.down")
-                                    .font(.caption)
-                                    .foregroundColor(Color(red: 142/255, green: 142/255, blue: 147/255))
-                            }
-                            .font(.system(size: 18, weight: .regular))
-                            .padding(.horizontal, 20)
+                        // Water Amount
+                        HStack {
+                            Label("Water Amount", systemImage: "drop")
+                                .foregroundColor(.white)
                             
-                            Picker("", selection: $viewModel.plant.waterAmount) {
-                                ForEach(viewModel.waterAmountOptions, id: \.self) { amount in
+                            Spacer()
+                            
+                            Picker("", selection: $plant.waterAmount) {
+                                ForEach(optionsViewModel.waterAmountOptions, id: \.self) { amount in
                                     Text(amount.rawValue).tag(amount)
                                 }
                             }
                             .pickerStyle(.menu)
-                            .opacity(0.02)
+                            .tint(Color(red: 142/255, green: 142/255, blue: 147/255))
                         }
+                        .padding(.vertical, 3)
+                        .padding(.horizontal)
                     }
-                    .frame(height: 95)
+                    .padding(.vertical, 10)
                     .background(Color(red: 44/255, green: 44/255, blue: 46/255))
                     .cornerRadius(30)
                     .padding(.horizontal)
-
-                    // --- زر الحذف (بالحجم والتصميم الجديد) ---
+                    
+                    // MARK: - Delete Button
                     Button(action: {
-                        // أضف هنا الإجراء الذي سيتم عند الضغط على زر الحذف
-                        print("Delete Reminder Tapped")
-                        isPresented = false // لإغلاق الواجهة كمثال
+                        // لا يمكن الحذف من هنا مباشرة بدون تمرير دالة الحذف من PlantListViewModel
+                        print("Delete Reminder Tapped - Action not fully implemented here")
+                        isPresented = false
                     }) {
                         Text("Delete Reminder")
                             .font(.system(size: 18, weight: .semibold))
                             .foregroundColor(.red)
                             .frame(maxWidth: .infinity, maxHeight: .infinity)
-                            .contentShape(Rectangle()) // لجعل المساحة كلها قابلة للنقر
+                            .contentShape(Rectangle())
                     }
-                    .frame(width: 370, height: 52) // تحديد حجم الزر
-                    .background(Color.clear) // خلفية شفافة
-                    .shadow(color: Color.white.opacity(0.12), radius: 0, x: 0, y: 1) // إضافة الظل السفلي
+                    .frame(width: 370, height: 52)
+                    .background(Color.clear)
+                    .shadow(color: Color.white.opacity(0.12), radius: 0, x: 0, y: 1)
                     .padding(.horizontal)
                     
                     Spacer()
                 }
                 .padding(.top, 40)
             }
-            .frame(maxWidth: .infinity, maxHeight: .infinity)
             .background(Color.black.ignoresSafeArea())
-            .navigationTitle("Set Reminder")
+            .navigationTitle("Edit Plant")
             .navigationBarTitleDisplayMode(.inline)
             .toolbar {
                 ToolbarItem(placement: .navigationBarLeading) {
@@ -201,14 +165,14 @@ struct EditView: View {
                 }
                 ToolbarItem(placement: .navigationBarTrailing) {
                     Button {
-                        viewModel.saveReminder()
+                        // لا نحتاج لـ saveReminder() لأن التعديلات تحدث مباشرة عبر @Binding
                         isPresented = false
                     } label: {
                         Image(systemName: "checkmark")
                             .font(.title3)
                             .foregroundColor(.white)
                             .frame(width: 36, height: 36)
-                            .background(Color("g")) // تأكد من وجود هذا اللون في Assets
+                            .background(Color("g"))
                             .clipShape(Circle())
                     }
                 }
@@ -219,6 +183,5 @@ struct EditView: View {
 }
 
 #Preview {
-    EditView(isPresented: .constant(true))
+    EditView(isPresented: .constant(true), plant: .constant(Plant()))
 }
-
