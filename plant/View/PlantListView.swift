@@ -1129,7 +1129,7 @@ struct PlantRowView: View {
                             .background(badgeBackgroundColor)
                             .cornerRadius(8)
                         
-                        Label(plant.waterAmount.rawValue, systemImage: "drop.fill")
+                        Label(plant.waterAmount.rawValue, systemImage: "drop")
                             .font(.system(size: 14, weight: .medium))
                             .foregroundColor(Color(red: 173/255, green: 200/255, blue: 255/255))
                             .padding(.horizontal, 10)
