@@ -1,7 +1,6 @@
 
 import SwiftUI
 
-
 struct EditView: View {
     
     @Binding var isPresented: Bool
@@ -130,7 +129,7 @@ struct EditView: View {
                     
                     // MARK: - Delete Button
                     Button(action: {
-                        // لا يمكن الحذف من هنا مباشرة بدون تمرير دالة الحذف من PlantListViewModel
+                        
                         print("Delete Reminder Tapped - Action not fully implemented here")
                         isPresented = false
                     }) {
@@ -165,7 +164,7 @@ struct EditView: View {
                 }
                 ToolbarItem(placement: .navigationBarTrailing) {
                     Button {
-                        // لا نحتاج لـ saveReminder() لأن التعديلات تحدث مباشرة عبر @Binding
+                        
                         isPresented = false
                     } label: {
                         Image(systemName: "checkmark")
