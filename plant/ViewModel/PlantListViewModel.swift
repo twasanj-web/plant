@@ -85,13 +85,63 @@
 
 // PlantListViewModel.swift
 
+//import Foundation
+//import Combine
+//import SwiftUI
+//
+//class PlantListViewModel: ObservableObject {
+//    @Published var plants: [Plant] = []
+//    
+//    var allPlantsSelected: Bool {
+//        if plants.isEmpty {
+//            return false
+//        }
+//        return plants.allSatisfy { $0.isSelected }
+//    }
+//    
+//    init() {
+//        // addSamplePlants()
+//    }
+//
+//    func addPlant(_ plant: Plant) {
+//        plants.append(plant)
+//    }
+//
+//    // هذه الدالة تعمل مع السحب للحذف (Swipe to Delete)
+//    func removePlant(at indexSet: IndexSet) {
+//        plants.remove(atOffsets: indexSet)
+//    }
+//    
+//    // ✅ --- أضفنا هذه الدالة الجديدة --- ✅
+//    // هذه الدالة تعمل مع زر الحذف المخصص في شاشة التعديل
+//    func removePlant(_ plantToRemove: Plant) {
+//        // ابحث عن النبتة في المصفوفة باستخدام الـ ID الخاص بها وقم بإزالتها
+//        if let index = plants.firstIndex(where: { $0.id == plantToRemove.id }) {
+//            plants.remove(at: index)
+//        }
+//    }
+//    // ---------------------------------
+//    
+//    private func addSamplePlants() {
+//        plants = [
+//            Plant(name: "Monstera", room: .kitchen, light: .partialSun, wateringDays: .onceAWeek, waterAmount: .medium, isSelected: false),
+//            Plant(name: "Pothos", room: .bedroom, light: .lowLight, wateringDays: .every10Days, waterAmount: .low),
+//            Plant(name: "Orchid", room: .livingRoom, light: .lowLight, wateringDays: .every3Days, waterAmount: .low)
+//        ]
+//    }
+//}
+
+
 import Foundation
 import Combine
 import SwiftUI
 
 class PlantListViewModel: ObservableObject {
+    
+    // --- الخصائص الأساسية ---
     @Published var plants: [Plant] = []
     
+    // خاصية محسوبة لمعرفة ما إذا كانت كل النباتات قد تم تحديدها
     var allPlantsSelected: Bool {
         if plants.isEmpty {
             return false
@@ -99,34 +149,33 @@ class PlantListViewModel: ObservableObject {
         return plants.allSatisfy { $0.isSelected }
     }
     
+    // --- المُهيئ (Initializer) ---
+    // الآن هو فارغ، وهذا هو الوضع الصحيح للنسخة النهائية
     init() {
-        // addSamplePlants()
+        // لا حاجة لإضافة نباتات وهمية عند بدء التشغيل
     }
 
+    // --- دوال لتعديل قائمة النباتات ---
+    
+    // إضافة نبتة جديدة
     func addPlant(_ plant: Plant) {
         plants.append(plant)
     }
 
-    // هذه الدالة تعمل مع السحب للحذف (Swipe to Delete)
+    // حذف نبتة عن طريق السحب (من List)
     func removePlant(at indexSet: IndexSet) {
         plants.remove(atOffsets: indexSet)
     }
     
-    // ✅ --- أضفنا هذه الدالة الجديدة --- ✅
-    // هذه الدالة تعمل مع زر الحذف المخصص في شاشة التعديل
+    // حذف نبتة معينة (مفيد لشاشات التعديل)
     func removePlant(_ plantToRemove: Plant) {
-        // ابحث عن النبتة في المصفوفة باستخدام الـ ID الخاص بها وقم بإزالتها
         if let index = plants.firstIndex(where: { $0.id == plantToRemove.id }) {
             plants.remove(at: index)
         }
     }
-    // ---------------------------------
     
-    private func addSamplePlants() {
-        plants = [
-            Plant(name: "Monstera", room: .kitchen, light: .partialSun, wateringDays: .onceAWeek, waterAmount: .medium, isSelected: false),
-            Plant(name: "Pothos", room: .bedroom, light: .lowLight, wateringDays: .every10Days, waterAmount: .low),
-            Plant(name: "Orchid", room: .livingRoom, light: .lowLight, wateringDays: .every3Days, waterAmount: .low)
-        ]
+    // حذف جميع النباتات (مهم للميزة التي طلبتها)
+    func removeAllPlants() {
+        plants.removeAll()
     }
 }
