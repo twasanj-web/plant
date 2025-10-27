@@ -3,11 +3,7 @@
 import Foundation
 import Combine
 
-//================================================
-//  ملف: MyPlantsViewModel.swift
-//  المجلد: ViewModels
-//  الغرض: هذا هو الـ ViewModel (وسيط العرض)
-//================================================
+
 
 class MyPlantsViewModel: ObservableObject {
     
